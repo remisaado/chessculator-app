@@ -1,5 +1,6 @@
 //import { StatusBar } from 'expo-status-bar';
 import { Pressable, SafeAreaView, StyleSheet, Text, View, StatusBar } from 'react-native';
+import { ChessPiecesTab } from './components';
 
 export default function App() {
   return (
@@ -10,14 +11,7 @@ export default function App() {
           <View style={styles.takenPiecesContainer}>
           </View>
         </View>
-        <View style={styles.chessPieceContainer}>
-          <Text style={styles.iconContainer}>P</Text>
-          <Text style={styles.iconContainer}>B</Text>
-          <Text style={styles.iconContainer}>H</Text>
-          <Text style={styles.iconContainer}>R</Text>
-          <Text style={styles.iconContainer}>Q</Text>
-          <Text style={styles.iconContainer}>K</Text>
-        </View>
+        <ChessPiecesTab color={"black"}/>
       </View>
       <Pressable style={({pressed}) => [styles.resetButton, pressed ? styles.pressedButton : null]}>
         <Text style={styles.resetText}>RESET SCORE</Text>
@@ -28,14 +22,7 @@ export default function App() {
           <View style={styles.takenPiecesContainer}>
           </View>
         </View>
-        <View style={styles.chessPieceContainer}>
-          <Text style={styles.iconContainer}>P</Text>
-          <Text style={styles.iconContainer}>B</Text>
-          <Text style={styles.iconContainer}>H</Text>
-          <Text style={styles.iconContainer}>R</Text>
-          <Text style={styles.iconContainer}>Q</Text>
-          <Text style={styles.iconContainer}>K</Text>
-        </View>
+        <ChessPiecesTab color={"white"}/>
       </View>
     </SafeAreaView>
   );
@@ -64,11 +51,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 24,
   },
-  chessPieceContainer: {
-    flexDirection: "row",
-    backgroundColor: "#DBCEAC",
-    justifyContent: "center",
-  },
   resetButton: {
     backgroundColor: "#0096EC",
     width: "100%",
@@ -84,11 +66,5 @@ const styles = StyleSheet.create({
   },
   pressedButton: {
     backgroundColor: "#4fbfff"
-  },
-  iconContainer: {
-    padding: 16,
-    margin: 8,
-    backgroundColor: "#E4D8B8",
-    borderRadius: 4,
   }
 });
