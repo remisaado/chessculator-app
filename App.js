@@ -54,6 +54,12 @@ export default function App() {
     return score;
   }
 
+  const resetScore = () => {
+    setTakenPieces([]);
+    setWhiteScore(0);
+    setBlackScore(0);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.containerHalf, styles.rotate]}>
@@ -90,7 +96,7 @@ export default function App() {
           </Pressable>
         </View>
       </View>
-      <Pressable style={({pressed}) => [styles.resetButton, pressed ? styles.pressedButton : null]}>
+      <Pressable onPress={() => resetScore()} style={({pressed}) => [styles.resetButton, pressed ? styles.pressedButton : null]}>
         <Text style={styles.resetText}>RESET SCORE</Text>
       </Pressable>
       <View style={styles.containerHalf}>
