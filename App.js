@@ -1,7 +1,6 @@
 //import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Pressable, SafeAreaView, StyleSheet, Text, View, StatusBar } from 'react-native';
-//import { ChessPiecesTab } from './components';
 import { ChessPiece, Button } from './components';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import 'react-native-get-random-values';
@@ -27,6 +26,7 @@ export default function App() {
     setTakenPieces(takenPieces => {return takenPieces.filter((item) => item.key !== removeKey)});
 
     score = calculateScore(item.name, item.color);
+
     if (item.color === "white") setWhiteScore(whiteScore - score);
     else setBlackScore(blackScore - score);
   }
@@ -49,7 +49,7 @@ export default function App() {
         score = 9;
         break;
       case "chess-king":
-        score = 999;
+        score = 99999;
         break;
     }
     return score;
@@ -63,7 +63,7 @@ export default function App() {
 
   const renderTakenPieces = (item) => {
     return (
-    <Pressable key={item.key} onPress={() => removePiece(item)}>
+    <Pressable key={item.key} onPress={() => removePiece(item)} style={styles.takenPiece}>
       <MaterialCommunityIcons key={item.key} name={item.name} size={iconSize} color={item.color} />
     </Pressable>
     )
@@ -81,7 +81,7 @@ export default function App() {
               ))}
           </View>
         </View>
-        <View style={styles.chessPieceContainer}>
+        <View style={styles.chessPiecesTab}>
           <ChessPiece onPress={() => {takePiece("chess-pawn", "black")}} name={"chess-pawn"} color={"black"}/>
           <ChessPiece onPress={() => {takePiece("chess-bishop", "black")}} name={"chess-bishop"} color={"black"}/>
           <ChessPiece onPress={() => {takePiece("chess-knight", "black")}} name={"chess-knight"} color={"black"}/>
@@ -101,7 +101,7 @@ export default function App() {
               ))}
           </View>
         </View>
-        <View style={styles.chessPieceContainer}>
+        <View style={styles.chessPiecesTab}>
           <ChessPiece onPress={() => {takePiece("chess-pawn", "white")}} name={"chess-pawn"} color={"white"}/>
           <ChessPiece onPress={() => {takePiece("chess-bishop", "white")}} name={"chess-bishop"} color={"white"}/>
           <ChessPiece onPress={() => {takePiece("chess-knight", "white")}} name={"chess-knight"} color={"white"}/>
@@ -134,13 +134,19 @@ const styles = StyleSheet.create({
     padding: (24, 24),
   },
   takenPiecesContainer: {
+    flexWrap: "wrap",
     flexDirection: "row",
     marginTop: 24,
+  },
+  takenPiece: {
+    backgroundColor: "#E4D8B8",
+    borderRadius: 4,
+    margin: 2,
   },
   scoreText: {
     fontSize: 20,
   },
-  chessPieceContainer: {
+  chessPiecesTab: {
     flexDirection: "row",
     backgroundColor: "#DBCEAC",
     justifyContent: "center",
