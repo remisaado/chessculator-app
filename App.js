@@ -1,5 +1,5 @@
 //import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pressable, SafeAreaView, StyleSheet, Text, View, StatusBar } from 'react-native';
 //import { ChessPiecesTab } from './components';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -8,18 +8,50 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function App() {
   const [takenPieces, setTakenPieces] = useState([]);
+  const [whiteScore, setWhiteScore] = useState(0);
+  const [blackScore, setBlackScore] = useState(0);
 
   const iconSize = 32;
 
   const takePiece = (name, color) => {
-    setTakenPieces(takenPieces => [...takenPieces, {key: uuidv4(), name, color}])
+    setTakenPieces(takenPieces => [...takenPieces, {key: uuidv4(), name, color}]);
+    
+    setScore(name, color);
+  }
+
+  const setScore = (name, color) => {
+    score = 0;
+
+    switch (name) {
+      case "chess-pawn":
+        score = 1;
+        break;
+      case "chess-bishop":
+        score = 3;
+        break;
+      case "chess-knight":
+        score = 3;
+        break;
+      case "chess-rook":
+        score = 5;
+        break;
+      case "chess-queen":
+        score = 9;
+        break;
+      case "chess-king":
+        score = 999;
+        break;
+    }
+
+    if (color === "white") setWhiteScore(whiteScore + score);
+    else setBlackScore(blackScore + score);
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.containerHalf, styles.rotate]}>
         <View style={styles.boardContainer}>
-          <Text style={styles.scoreText}>Score: 0</Text>
+          <Text style={styles.scoreText}>Score: {blackScore}</Text>
           <View style={styles.takenPiecesContainer}>
             {takenPieces.map((item) => (
               item.color === "black" ?
@@ -54,7 +86,7 @@ export default function App() {
       </Pressable>
       <View style={styles.containerHalf}>
         <View style={styles.boardContainer}>
-          <Text style={styles.scoreText}>Score: 0</Text>
+          <Text style={styles.scoreText}>Score: {whiteScore}</Text>
           <View style={styles.takenPiecesContainer}>
             {takenPieces.map((item) => (
               item.color === "white" ?
