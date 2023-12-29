@@ -16,12 +16,21 @@ export default function App() {
   const takePiece = (name, color) => {
     setTakenPieces(takenPieces => [...takenPieces, {key: uuidv4(), name, color}]);
     
-    setScore(name, color);
+    score = calculateScore(name, color);
+    if (color === "white") setWhiteScore(whiteScore + score);
+    else setBlackScore(blackScore + score);
   }
 
-  const setScore = (name, color) => {
-    score = 0;
+  const removePiece = (item) => {
+    removeKey = item.key;
+    setTakenPieces(takenPieces => {return takenPieces.filter((item) => item.key !== removeKey)});
 
+    score = calculateScore(item.name, item.color);
+    if (item.color === "white") setWhiteScore(whiteScore - score);
+    else setBlackScore(blackScore - score);
+  }
+
+  const calculateScore = (name) => {
     switch (name) {
       case "chess-pawn":
         score = 1;
@@ -42,9 +51,7 @@ export default function App() {
         score = 999;
         break;
     }
-
-    if (color === "white") setWhiteScore(whiteScore + score);
-    else setBlackScore(blackScore + score);
+    return score;
   }
 
   return (
@@ -55,7 +62,9 @@ export default function App() {
           <View style={styles.takenPiecesContainer}>
             {takenPieces.map((item) => (
               item.color === "black" ?
-              <MaterialCommunityIcons key={item.key} name={item.name} size={iconSize} color={item.color} />
+              <Pressable key={item.key} onPress={() => removePiece(item)}>
+                <MaterialCommunityIcons name={item.name} size={iconSize} color={item.color} />
+              </Pressable>
               : null
             ))}
           </View>
@@ -90,7 +99,9 @@ export default function App() {
           <View style={styles.takenPiecesContainer}>
             {takenPieces.map((item) => (
               item.color === "white" ?
-              <MaterialCommunityIcons key={item.key} name={item.name} size={iconSize} color={item.color} />
+              <Pressable key={item.key} onPress={() => removePiece(item)}>
+                <MaterialCommunityIcons key={item.key} name={item.name} size={iconSize} color={item.color} />
+              </Pressable>
               : null
             ))}
           </View>
