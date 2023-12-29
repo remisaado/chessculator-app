@@ -1,7 +1,8 @@
 //import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Pressable, SafeAreaView, StyleSheet, Text, View, StatusBar } from 'react-native';
 //import { ChessPiecesTab } from './components';
+import { ChessPiece, Button } from './components';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -60,77 +61,53 @@ export default function App() {
     setBlackScore(0);
   }
 
+  const renderTakenPieces = (item) => {
+    return (
+    <Pressable key={item.key} onPress={() => removePiece(item)}>
+      <MaterialCommunityIcons key={item.key} name={item.name} size={iconSize} color={item.color} />
+    </Pressable>
+    )
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.containerHalf, styles.rotate]}>
         <View style={styles.boardContainer}>
-          <Text style={styles.scoreText}>Score: {blackScore}</Text>
+          <Text style={styles.scoreText}>Points: {blackScore}</Text>
           <View style={styles.takenPiecesContainer}>
             {takenPieces.map((item) => (
-              item.color === "black" ?
-              <Pressable key={item.key} onPress={() => removePiece(item)}>
-                <MaterialCommunityIcons name={item.name} size={iconSize} color={item.color} />
-              </Pressable>
+              item.color === "black" ? renderTakenPieces(item)
               : null
-            ))}
+              ))}
           </View>
         </View>
         <View style={styles.chessPieceContainer}>
-          <Pressable onPress={() => {takePiece("chess-pawn", "black")}}>
-            <MaterialCommunityIcons name="chess-pawn" size={iconSize} style={styles.iconContainer} color={"black"} />
-          </Pressable>
-          <Pressable onPress={() => {takePiece("chess-bishop", "black")}}>
-            <MaterialCommunityIcons name="chess-bishop" size={iconSize} style={styles.iconContainer} color={"black"} />
-          </Pressable>
-          <Pressable onPress={() => {takePiece("chess-knight", "black")}}>
-            <MaterialCommunityIcons name="chess-knight" size={iconSize} style={styles.iconContainer} color={"black"} />
-          </Pressable>
-          <Pressable onPress={() => {takePiece("chess-rook", "black")}}>
-            <MaterialCommunityIcons name="chess-rook" size={iconSize} style={styles.iconContainer} color={"black"} />
-          </Pressable>
-          <Pressable onPress={() => {takePiece("chess-queen", "black")}}>
-            <MaterialCommunityIcons name="chess-queen" size={iconSize} style={styles.iconContainer} color={"black"} />
-          </Pressable>
-          <Pressable onPress={() => {takePiece("chess-king", "black")}}>
-            <MaterialCommunityIcons name="chess-king" size={iconSize} style={styles.iconContainer} color={"black"} />
-          </Pressable>
+          <ChessPiece onPress={() => {takePiece("chess-pawn", "black")}} name={"chess-pawn"} color={"black"}/>
+          <ChessPiece onPress={() => {takePiece("chess-bishop", "black")}} name={"chess-bishop"} color={"black"}/>
+          <ChessPiece onPress={() => {takePiece("chess-knight", "black")}} name={"chess-knight"} color={"black"}/>
+          <ChessPiece onPress={() => {takePiece("chess-rook", "black")}} name={"chess-rook"} color={"black"}/>
+          <ChessPiece onPress={() => {takePiece("chess-queen", "black")}} name={"chess-queen"} color={"black"}/>
+          <ChessPiece onPress={() => {takePiece("chess-king", "black")}} name={"chess-king"} color={"black"}/>
         </View>
       </View>
-      <Pressable onPress={() => resetScore()} style={({pressed}) => [styles.resetButton, pressed ? styles.pressedButton : null]}>
-        <Text style={styles.resetText}>RESET SCORE</Text>
-      </Pressable>
+      <Button onPress={() => resetScore()} text="RESET SCORE"/>
       <View style={styles.containerHalf}>
         <View style={styles.boardContainer}>
-          <Text style={styles.scoreText}>Score: {whiteScore}</Text>
+          <Text style={styles.scoreText}>Points: {whiteScore}</Text>
           <View style={styles.takenPiecesContainer}>
             {takenPieces.map((item) => (
-              item.color === "white" ?
-              <Pressable key={item.key} onPress={() => removePiece(item)}>
-                <MaterialCommunityIcons key={item.key} name={item.name} size={iconSize} color={item.color} />
-              </Pressable>
+              item.color === "white" ? renderTakenPieces(item)
               : null
-            ))}
+              ))}
           </View>
         </View>
         <View style={styles.chessPieceContainer}>
-          <Pressable onPress={() => {takePiece("chess-pawn", "white")}}>
-            <MaterialCommunityIcons name="chess-pawn" size={iconSize} style={styles.iconContainer} color={"white"} />
-          </Pressable>
-          <Pressable onPress={() => {takePiece("chess-bishop", "white")}}>
-            <MaterialCommunityIcons name="chess-bishop" size={iconSize} style={styles.iconContainer} color={"white"} />
-          </Pressable>
-          <Pressable onPress={() => {takePiece("chess-knight", "white")}}>
-            <MaterialCommunityIcons name="chess-knight" size={iconSize} style={styles.iconContainer} color={"white"} />
-          </Pressable>
-          <Pressable onPress={() => {takePiece("chess-rook", "white")}}>
-            <MaterialCommunityIcons name="chess-rook" size={iconSize} style={styles.iconContainer} color={"white"} />
-          </Pressable>
-          <Pressable onPress={() => {takePiece("chess-queen", "white")}}>
-            <MaterialCommunityIcons name="chess-queen" size={iconSize} style={styles.iconContainer} color={"white"} />
-          </Pressable>
-          <Pressable onPress={() => {takePiece("chess-king", "white")}}>
-            <MaterialCommunityIcons name="chess-king" size={iconSize} style={styles.iconContainer} color={"white"} />
-          </Pressable>
+          <ChessPiece onPress={() => {takePiece("chess-pawn", "white")}} name={"chess-pawn"} color={"white"}/>
+          <ChessPiece onPress={() => {takePiece("chess-bishop", "white")}} name={"chess-bishop"} color={"white"}/>
+          <ChessPiece onPress={() => {takePiece("chess-knight", "white")}} name={"chess-knight"} color={"white"}/>
+          <ChessPiece onPress={() => {takePiece("chess-rook", "white")}} name={"chess-rook"} color={"white"}/>
+          <ChessPiece onPress={() => {takePiece("chess-queen", "white")}} name={"chess-queen"} color={"white"}/>
+          <ChessPiece onPress={() => {takePiece("chess-king", "white")}} name={"chess-king"} color={"white"}/>
         </View>
       </View>
     </SafeAreaView>
@@ -160,21 +137,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 24,
   },
-  resetButton: {
-    backgroundColor: "#0096EC",
-    width: "100%",
-    alignItems: "center",
-  },
-  resetText: {
-    color: "white",
-    padding: 16,
-    fontSize: 18,
-  },
   scoreText: {
     fontSize: 20,
-  },
-  pressedButton: {
-    backgroundColor: "#4fbfff"
   },
   chessPieceContainer: {
     flexDirection: "row",
