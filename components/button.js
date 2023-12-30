@@ -1,4 +1,5 @@
 import { StyleSheet, Pressable, Text } from "react-native";
+
 // Button component
 const Button = ({onPress, text}) => {
     return (

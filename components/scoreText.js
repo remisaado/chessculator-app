@@ -1,4 +1,5 @@
 import { StyleSheet, Text } from "react-native";
+
 // Score Text component to display winner if king is taken otherwise show each players score
 const ScoreText = ({color, winner, whiteScore, blackScore, white}) => {
     return (
