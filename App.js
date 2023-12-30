@@ -1,7 +1,6 @@
-//import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Pressable, SafeAreaView, StyleSheet, Text, View, StatusBar } from 'react-native';
-import { ChessPiece, Button } from './components';
+import { Pressable, SafeAreaView, StyleSheet, View, StatusBar } from 'react-native';
+import { ChessPiece, Button, ScoreText } from './components';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,14 +9,34 @@ export default function App() {
   const [takenPieces, setTakenPieces] = useState([]);
   const [whiteScore, setWhiteScore] = useState(0);
   const [blackScore, setBlackScore] = useState(0);
+  const [winner, setWinner] = useState("");
 
   const iconSize = 32;
+  const white = "white";
+  const black = "black";
+  const pieces = {
+    pawn: "chess-pawn",
+    bishop: "chess-bishop",
+    knight: "chess-knight",
+    rook: "chess-rook",
+    queen: "chess-queen",
+    king: "chess-king",
+  };
 
   const takePiece = (name, color) => {
+    if (takenPieces.length >= 32) return;
+
     setTakenPieces(takenPieces => [...takenPieces, {key: uuidv4(), name, color}]);
+
+    if (name === pieces.king)
+    {
+      setWinner(color + " wins by checkmate!");
+      return;
+    }
     
-    score = calculateScore(name, color);
-    if (color === "white") setWhiteScore(whiteScore + score);
+    score = calculateScore(name);
+
+    if (color === white) setWhiteScore(whiteScore + score);
     else setBlackScore(blackScore + score);
   }
 
@@ -25,31 +44,34 @@ export default function App() {
     removeKey = item.key;
     setTakenPieces(takenPieces => {return takenPieces.filter((item) => item.key !== removeKey)});
 
-    score = calculateScore(item.name, item.color);
+    if (item.name === pieces.king)
+    {
+      setWinner("");
+      return;
+    }
+    
+    score = calculateScore(item.name);
 
-    if (item.color === "white") setWhiteScore(whiteScore - score);
+    if (item.color === white) setWhiteScore(whiteScore - score);
     else setBlackScore(blackScore - score);
   }
 
   const calculateScore = (name) => {
     switch (name) {
-      case "chess-pawn":
+      case pieces.pawn:
         score = 1;
         break;
-      case "chess-bishop":
+      case pieces.bishop:
         score = 3;
         break;
-      case "chess-knight":
+      case pieces.knight:
         score = 3;
         break;
-      case "chess-rook":
+      case pieces.rook:
         score = 5;
         break;
-      case "chess-queen":
+      case pieces.queen:
         score = 9;
-        break;
-      case "chess-king":
-        score = 99999;
         break;
     }
     return score;
@@ -59,6 +81,7 @@ export default function App() {
     setTakenPieces([]);
     setWhiteScore(0);
     setBlackScore(0);
+    setWinner("");
   }
 
   const renderTakenPieces = (item) => {
@@ -71,43 +94,44 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={"#E4D8B8"}/>
       <View style={[styles.containerHalf, styles.rotate]}>
         <View style={styles.boardContainer}>
-          <Text style={styles.scoreText}>Points: {blackScore}</Text>
+          <ScoreText color={black} winner={winner} whiteScore={whiteScore} blackScore={blackScore} white={white}/>
           <View style={styles.takenPiecesContainer}>
             {takenPieces.map((item) => (
-              item.color === "black" ? renderTakenPieces(item)
+              item.color === black ? renderTakenPieces(item)
               : null
               ))}
           </View>
         </View>
         <View style={styles.chessPiecesTab}>
-          <ChessPiece onPress={() => {takePiece("chess-pawn", "black")}} name={"chess-pawn"} color={"black"}/>
-          <ChessPiece onPress={() => {takePiece("chess-bishop", "black")}} name={"chess-bishop"} color={"black"}/>
-          <ChessPiece onPress={() => {takePiece("chess-knight", "black")}} name={"chess-knight"} color={"black"}/>
-          <ChessPiece onPress={() => {takePiece("chess-rook", "black")}} name={"chess-rook"} color={"black"}/>
-          <ChessPiece onPress={() => {takePiece("chess-queen", "black")}} name={"chess-queen"} color={"black"}/>
-          <ChessPiece onPress={() => {takePiece("chess-king", "black")}} name={"chess-king"} color={"black"}/>
+          <ChessPiece onPress={() => {takePiece(pieces.pawn, black)}} name={pieces.pawn} color={black} winner={winner}/>
+          <ChessPiece onPress={() => {takePiece(pieces.bishop, black)}} name={pieces.bishop} color={black} winner={winner}/>
+          <ChessPiece onPress={() => {takePiece(pieces.knight, black)}} name={pieces.knight} color={black} winner={winner}/>
+          <ChessPiece onPress={() => {takePiece(pieces.rook, black)}} name={pieces.rook} color={black} winner={winner}/>
+          <ChessPiece onPress={() => {takePiece(pieces.queen, black)}} name={pieces.queen} color={black} winner={winner}/>
+          <ChessPiece onPress={() => {takePiece(pieces.king, black)}} name={pieces.king} color={black} winner={winner}/>
         </View>
       </View>
       <Button onPress={() => resetScore()} text="RESET SCORE"/>
       <View style={styles.containerHalf}>
         <View style={styles.boardContainer}>
-          <Text style={styles.scoreText}>Points: {whiteScore}</Text>
+          <ScoreText color={white} winner={winner} whiteScore={whiteScore} blackScore={blackScore} white={white}/>
           <View style={styles.takenPiecesContainer}>
             {takenPieces.map((item) => (
-              item.color === "white" ? renderTakenPieces(item)
+              item.color === white ? renderTakenPieces(item)
               : null
               ))}
           </View>
         </View>
         <View style={styles.chessPiecesTab}>
-          <ChessPiece onPress={() => {takePiece("chess-pawn", "white")}} name={"chess-pawn"} color={"white"}/>
-          <ChessPiece onPress={() => {takePiece("chess-bishop", "white")}} name={"chess-bishop"} color={"white"}/>
-          <ChessPiece onPress={() => {takePiece("chess-knight", "white")}} name={"chess-knight"} color={"white"}/>
-          <ChessPiece onPress={() => {takePiece("chess-rook", "white")}} name={"chess-rook"} color={"white"}/>
-          <ChessPiece onPress={() => {takePiece("chess-queen", "white")}} name={"chess-queen"} color={"white"}/>
-          <ChessPiece onPress={() => {takePiece("chess-king", "white")}} name={"chess-king"} color={"white"}/>
+          <ChessPiece onPress={() => {takePiece(pieces.pawn, white)}} name={pieces.pawn} color={white} winner={winner}/>
+          <ChessPiece onPress={() => {takePiece(pieces.bishop, white)}} name={pieces.bishop} color={white} winner={winner}/>
+          <ChessPiece onPress={() => {takePiece(pieces.knight, white)}} name={pieces.knight} color={white} winner={winner}/>
+          <ChessPiece onPress={() => {takePiece(pieces.rook, white)}} name={pieces.rook} color={white} winner={winner}/>
+          <ChessPiece onPress={() => {takePiece(pieces.queen, white)}} name={pieces.queen} color={white} winner={winner}/>
+          <ChessPiece onPress={() => {takePiece(pieces.king, white)}} name={pieces.king} color={white} winner={winner}/>
         </View>
       </View>
     </SafeAreaView>
@@ -119,7 +143,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: StatusBar.currentHeight,
   },
   containerHalf: {
     backgroundColor: "#F0EAD9",
@@ -131,31 +154,21 @@ const styles = StyleSheet.create({
   },
   boardContainer: {
     flex: 1,
-    padding: (24, 24),
+    padding: 24,
   },
   takenPiecesContainer: {
     flexWrap: "wrap",
     flexDirection: "row",
-    marginTop: 24,
+    marginTop: 16,
   },
   takenPiece: {
     backgroundColor: "#E4D8B8",
     borderRadius: 4,
     margin: 2,
   },
-  scoreText: {
-    fontSize: 20,
-  },
   chessPiecesTab: {
     flexDirection: "row",
     backgroundColor: "#DBCEAC",
     justifyContent: "center",
   },
-  iconContainer: {
-      padding: 8,
-      marginVertical: 12,
-      marginHorizontal: 4,
-      backgroundColor: "#E4D8B8",
-      borderRadius: 4,
-}
 });

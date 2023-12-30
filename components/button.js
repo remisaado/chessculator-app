@@ -10,17 +10,17 @@ const Button = ({onPress, text}) => {
 
 const styles = StyleSheet.create({
     resetButton: {
-        backgroundColor: "#0096EC",
+        backgroundColor: "#800020",
         width: "100%",
         alignItems: "center",
     },
     resetText: {
         color: "white",
         padding: 16,
-        fontSize: 18,
+        fontSize: 20,
     },
     pressedButton: {
-      backgroundColor: "#4fbfff"
+      backgroundColor: "#ab002a"
     },
 })
 

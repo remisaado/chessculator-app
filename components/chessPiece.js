@@ -3,9 +3,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const iconSize = 32;
 
-const ChessPiece = ({onPress, name, color}) => {
+const ChessPiece = ({onPress, name, color, winner}) => {
     return (
-        <Pressable onPress={onPress}>
+        <Pressable onPress={onPress} disabled={winner !== ""}>
             <MaterialCommunityIcons name={name} size={iconSize} style={styles.iconContainer} color={color} />
         </Pressable>
     )
