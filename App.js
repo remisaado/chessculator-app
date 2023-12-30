@@ -6,11 +6,13 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function App() {
+  // Declaration of state variables
   const [takenPieces, setTakenPieces] = useState([]);
   const [whiteScore, setWhiteScore] = useState(0);
   const [blackScore, setBlackScore] = useState(0);
   const [winner, setWinner] = useState("");
-
+  
+  // Declaration of constant variables
   const iconSize = 32;
   const white = "white";
   const black = "black";
@@ -23,11 +25,13 @@ export default function App() {
     king: "chess-king",
   };
 
+  // Function for taking a chess piece
   const takePiece = (name, color) => {
+    // Limit amount of total pieces to be taken by 32
     if (takenPieces.length >= 32) return;
-
+  
     setTakenPieces(takenPieces => [...takenPieces, {key: uuidv4(), name, color}]);
-
+    // If king is taken, display winner based on color
     if (name === pieces.king)
     {
       setWinner(color + " wins by checkmate!");
@@ -35,15 +39,16 @@ export default function App() {
     }
     
     score = calculateScore(name);
-
+    // Add to score
     if (color === white) setWhiteScore(whiteScore + score);
     else setBlackScore(blackScore + score);
   }
 
+  // Function for removing a taken chess piece from the board
   const removePiece = (item) => {
     removeKey = item.key;
     setTakenPieces(takenPieces => {return takenPieces.filter((item) => item.key !== removeKey)});
-
+    // If king is removed from board, reset winner text
     if (item.name === pieces.king)
     {
       setWinner("");
@@ -51,11 +56,12 @@ export default function App() {
     }
     
     score = calculateScore(item.name);
-
+    // Subtract from score
     if (item.color === white) setWhiteScore(whiteScore - score);
     else setBlackScore(blackScore - score);
   }
 
+  // Function for calculating score based on selected chess piece
   const calculateScore = (name) => {
     switch (name) {
       case pieces.pawn:
@@ -77,6 +83,7 @@ export default function App() {
     return score;
   }
 
+  // Function for resetting state values
   const resetScore = () => {
     setTakenPieces([]);
     setWhiteScore(0);
@@ -84,6 +91,7 @@ export default function App() {
     setWinner("");
   }
 
+  // Render the taken pieces on the boards
   const renderTakenPieces = (item) => {
     return (
     <Pressable key={item.key} onPress={() => removePiece(item)} style={styles.takenPiece}>
