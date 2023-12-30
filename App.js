@@ -11,7 +11,7 @@ export default function App() {
   const [whiteScore, setWhiteScore] = useState(0);
   const [blackScore, setBlackScore] = useState(0);
   const [winner, setWinner] = useState("");
-  
+
   // Declaration of constant variables
   const iconSize = 32;
   const white = "white";
@@ -34,7 +34,7 @@ export default function App() {
     // If king is taken, display winner based on color
     if (name === pieces.king)
     {
-      setWinner(color + " wins by checkmate!");
+      setWinner(color === "white" ? "black wins by checkmate!" : "White wins by checkmate!");
       return;
     }
     
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E4D8B8",
     borderRadius: 4,
     margin: 2,
+    padding: 1,
   },
   chessPiecesTab: {
     flexDirection: "row",
