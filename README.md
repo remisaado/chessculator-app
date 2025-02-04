@@ -1,5 +1,4 @@
 # Chessculator
-#### Video Demo:  https://youtu.be/mVEBaxdzVmU
 #### Description: Score calculator for the game of Chess created as a final project to Harvards CS50x course
 
 This mobile application, created in React-Native, is a project that I have chosen to name "Chessculator", a fusion of the name of the classic board game "Chess" and the word "Calculator". The name should give a general explanation of what this project might be, it is a digital tool to be used with the physical board game of Chess. The purpose of this application is to calculate the score between the two players in a game of Chess, by choosing the pieces taken by each player in the game the application will represent those pieces on the screen and properly calculate the score according to the classic scoring system of Chess.
